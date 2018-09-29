@@ -25,7 +25,6 @@ void lzwEncode(std::string filePathi, std::string outFileName)
 	{
 		dictionary[std::string(1,count)] = count;
 	}
-	++count; // spacing out  for clear flag
 	++count; // spacing out for end flag
 	auto checkEntryInDict = [&dictionary](const std::string& entry)
 	{
@@ -68,5 +67,49 @@ void lzwEncode(std::string filePathi, std::string outFileName)
 
 void lzwDecode(std::string sourceFile, std::string outputFile)
 {
-	
+	int bitSize = 8;
+	std::ifstream source(sourceFile);
+	if(!source.is_open())
+	{
+		throw std::runtime_error("decode _ open source file failed");
+	}
+
+	//init dictionary
+	std::map<int, std::string> dict;
+	int count =0;
+	for(; count < 256; ++count)
+	{
+		dict[count] = std::string(1,count);
+	}
+	++count; // spaceing out for end flag ,,,,  clear flag  256
+	auto checkEntryInDict = [&dictionary](int index)
+	{
+		auto itr = dict.find(index);
+		if(itr!=dictionary.end())
+		{
+			return itr->second;
+		}
+		return "";
+	}
+	std::string prefixStr = "";
+	std::string entryStr = "";
+	std::stringstream outStrStream;
+	while(!source.eof())
+	{
+		char tempChar[200];
+		source.read(&tempChar,bitSize);
+		entryStr = prefixStr + tempChar;
+		auto  str = checkEntryInDict(entryStr);
+		if(str.empty())
+		{
+			
+		}
+		else
+		{
+			prefixStr = entryStr;
+		}
+
+	}
+
+
 }
