@@ -65,3 +65,8 @@ void lzwEncode(std::string filePathi, std::string outFileName)
 	outFile.write(outStr.c_str(), outStr.size());
 	return;
 }
+
+void lzwDecode(std::string sourceFile, std::string outputFile)
+{
+	
+}
